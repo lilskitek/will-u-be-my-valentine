@@ -1,0 +1,241 @@
+.container {
+  /* iOS Safari viewport fix */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  /* Prevent iOS Safari bounce scrolling */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.question-container,
+.answer-container {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+}
+
+.hello-kitty-image {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kitty-gif {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(255, 182, 193, 0.4));
+}
+
+.hello-kitty-happy {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kitty-gif-happy {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(255, 182, 193, 0.5));
+}
+
+.question {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: #ff6b9d;
+  margin-bottom: 3rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.3);
+  line-height: 1.2;
+}
+
+.answer {
+  font-size: clamp(3rem, 8vw, 5rem);
+  color: #ff6b9d;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-shadow: 3px 3px 6px rgba(255, 182, 193, 0.4);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: #ff8fab;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(255, 182, 193, 0.2);
+}
+
+.buttons-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  position: relative;
+  min-height: 80px;
+}
+
+.button {
+  padding: 1.2rem 3rem;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: inherit;
+  position: relative;
+  z-index: 20;
+  /* iOS Safari touch optimizations */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.button-yes {
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+  border: 3px solid #ffffff;
+}
+
+.button-yes:hover {
+  background: linear-gradient(135deg, #ff5a8a 0%, #ff7a9a 100%);
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.5);
+  transform: translateY(-2px);
+}
+
+.button-yes:active {
+  transform: translateY(0);
+}
+
+.button-no {
+  background: linear-gradient(135deg, #ffb3d9 0%, #ffc0e5 100%);
+  color: #ff6b9d;
+  box-shadow: 0 6px 20px rgba(255, 179, 217, 0.4);
+  transition: left 0.2s ease-out, top 0.2s ease-out;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.button-no:hover {
+  background: linear-gradient(135deg, #ffa3c9 0%, #ffb0d5 100%);
+}
+
+.button-no:active {
+  transform: scale(0.95);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .kitty-gif {
+    width: 150px;
+    height: 150px;
+  }
+
+  .kitty-gif-happy {
+    width: 180px;
+    height: 180px;
+  }
+
+  .question {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .answer {
+    font-size: 2.5rem;
+  }
+
+  .buttons-container {
+    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button {
+    padding: 1rem 2.5rem;
+    width: 200px;
+  }
+
+  .button-no {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 15px;
+  }
+
+  .question {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .answer {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .button {
+    padding: 0.9rem 2rem;
+    font-size: 1.1rem;
+    width: 180px;
+  }
+}
+
+/* Additional Hello Kitty touches */
+.question-container::before {
+  content: '🎀';
+  position: absolute;
+  top: -30px;
+  left: 10%;
+  font-size: 2rem;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 4px rgba(255, 182, 193, 0.3));
+}
+
+.question-container::after {
+  content: '🎀';
+  position: absolute;
+  top: -30px;
+  right: 10%;
+  font-size: 2rem;
+  animation: float 6s ease-in-out infinite 1s;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 4px rgba(255, 182, 193, 0.3));
+}
+
+/* Hello Kitty bow pattern overlay */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 182, 217, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 182, 217, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
