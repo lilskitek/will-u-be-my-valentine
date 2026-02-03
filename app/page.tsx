@@ -11,6 +11,7 @@ export default function Home() {
   const [sparkles, setSparkles] = useState<Array<{ id: number; left: number; top: number }>>([])
   const [confetti, setConfetti] = useState<Array<{ id: number; left: number; delay: number; color: string }>>([])
   const [bows, setBows] = useState<Array<{ id: number; left: number; delay: number }>>([])
+  const [noButtonMoved, setNoButtonMoved] = useState(false)
   const noButtonRef = useRef<HTMLButtonElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -28,24 +29,89 @@ export default function Home() {
     const buttonWidth = buttonRect.width || 200
     const buttonHeight = buttonRect.height || 60
 
+    // Find the Yes button to avoid overlapping
+    const yesButton = document.querySelector('.button-yes') as HTMLElement
+    let yesButtonRect: DOMRect | null = null
+    if (yesButton) {
+      yesButtonRect = yesButton.getBoundingClientRect()
+    }
+
     // Generate random position within viewport bounds with safe margins
     const margin = 20
     const maxX = Math.max(0, viewportWidth - buttonWidth - margin)
     const maxY = Math.max(0, viewportHeight - buttonHeight - margin)
 
-    const randomX = Math.random() * maxX + margin
-    const randomY = Math.random() * maxY + margin
+    let randomX: number
+    let randomY: number
+    let attempts = 0
+    const maxAttempts = 50
 
-    // Apply position using fixed positioning relative to viewport
-    // Use transform for better iOS Safari performance
-    button.style.position = 'fixed'
-    button.style.left = `${randomX}px`
-    button.style.top = `${randomY}px`
-    button.style.right = 'auto'
-    button.style.bottom = 'auto'
-    button.style.transform = 'translateZ(0)' // Force hardware acceleration on iOS
-    button.style.zIndex = '1000'
-    button.style.webkitTransform = 'translateZ(0)' // iOS Safari prefix
+    // Try to find a position that doesn't overlap with Yes button
+    do {
+      randomX = Math.random() * maxX + margin
+      randomY = Math.random() * maxY + margin
+      attempts++
+
+      // Check if position overlaps with Yes button
+      if (yesButtonRect) {
+        const noButtonLeft = randomX
+        const noButtonRight = randomX + buttonWidth
+        const noButtonTop = randomY
+        const noButtonBottom = randomY + buttonHeight
+
+        const yesButtonLeft = yesButtonRect.left
+        const yesButtonRight = yesButtonRect.right
+        const yesButtonTop = yesButtonRect.top
+        const yesButtonBottom = yesButtonRect.bottom
+
+        // Check for overlap with additional padding to ensure separation
+        const padding = 30
+        const overlaps = !(
+          noButtonRight + padding < yesButtonLeft ||
+          noButtonLeft - padding > yesButtonRight ||
+          noButtonBottom + padding < yesButtonTop ||
+          noButtonTop - padding > yesButtonBottom
+        )
+
+        if (!overlaps || attempts >= maxAttempts) {
+          break
+        }
+      } else {
+        break
+      }
+    } while (attempts < maxAttempts)
+
+    // Mark button as moved for smooth transition
+    if (!noButtonMoved) {
+      setNoButtonMoved(true)
+      // Get current position before changing to fixed
+      const currentRect = button.getBoundingClientRect()
+      // Set transition first for smooth movement
+      button.style.transition = 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+      button.style.willChange = 'left, top'
+      // Switch to fixed positioning at current location
+      button.style.position = 'fixed'
+      button.style.left = `${currentRect.left}px`
+      button.style.top = `${currentRect.top}px`
+      button.style.right = 'auto'
+      button.style.bottom = 'auto'
+      button.style.zIndex = '1000'
+      // Force reflow to apply initial position before moving
+      requestAnimationFrame(() => {
+        button.offsetHeight
+      })
+    }
+
+    // Apply new position with smooth transition
+    // Use requestAnimationFrame to ensure smooth transition
+    requestAnimationFrame(() => {
+      if (noButtonRef.current) {
+        noButtonRef.current.style.left = `${randomX}px`
+        noButtonRef.current.style.top = `${randomY}px`
+        noButtonRef.current.style.transform = 'translateZ(0)' // Force hardware acceleration on iOS
+        noButtonRef.current.style.webkitTransform = 'translateZ(0)' // iOS Safari prefix
+      }
+    })
 
     // Prevent default click behavior and scrolling
     if (e) {
@@ -64,7 +130,7 @@ export default function Home() {
   const handleYesClick = () => {
     setYesClicked(true)
 
-    // Create floating hearts
+    // Create floating hearts - start from bottom (100vh)
     const newHearts = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
@@ -72,7 +138,7 @@ export default function Home() {
     }))
     setHearts(newHearts)
 
-    // Create sparkles
+    // Create sparkles - positioned randomly but visible
     const newSparkles = Array.from({ length: 30 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
@@ -80,7 +146,7 @@ export default function Home() {
     }))
     setSparkles(newSparkles)
 
-    // Create confetti
+    // Create confetti - start from top
     const colors = ['#ff6b9d', '#ffb3d9', '#ffc0e5', '#ffd6e8', '#ffe5f1', '#ff69b4']
     const newConfetti = Array.from({ length: 50 }, (_, i) => ({
       id: i,
@@ -90,7 +156,7 @@ export default function Home() {
     }))
     setConfetti(newConfetti)
 
-    // Create floating bows
+    // Create floating bows - start from bottom (100vh)
     const newBows = Array.from({ length: 15 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
@@ -121,6 +187,7 @@ export default function Home() {
           className="heart"
           style={{
             left: `${heart.left}%`,
+            bottom: '0',
             animationDelay: `${heart.delay}s`,
           }}
         >
@@ -164,6 +231,7 @@ export default function Home() {
           className="bow"
           style={{
             left: `${bow.left}%`,
+            bottom: '0',
             animationDelay: `${bow.delay}s`,
           }}
         >

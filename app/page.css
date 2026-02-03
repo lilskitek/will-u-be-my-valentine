@@ -127,9 +127,10 @@
   background: linear-gradient(135deg, #ffb3d9 0%, #ffc0e5 100%);
   color: #ff6b9d;
   box-shadow: 0 6px 20px rgba(255, 179, 217, 0.4);
-  transition: left 0.2s ease-out, top 0.2s ease-out;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
   -webkit-user-select: none;
+  will-change: left, top;
 }
 
 .button-no:hover {
@@ -202,28 +203,7 @@
   }
 }
 
-/* Additional Hello Kitty touches */
-.question-container::before {
-  content: '🎀';
-  position: absolute;
-  top: -30px;
-  left: 10%;
-  font-size: 2rem;
-  animation: float 6s ease-in-out infinite;
-  opacity: 0.7;
-  filter: drop-shadow(0 2px 4px rgba(255, 182, 193, 0.3));
-}
-
-.question-container::after {
-  content: '🎀';
-  position: absolute;
-  top: -30px;
-  right: 10%;
-  font-size: 2rem;
-  animation: float 6s ease-in-out infinite 1s;
-  opacity: 0.7;
-  filter: drop-shadow(0 2px 4px rgba(255, 182, 193, 0.3));
-}
+/* Removed decorative emojis - keeping only floating animations */
 
 /* Hello Kitty bow pattern overlay */
 .container::before {

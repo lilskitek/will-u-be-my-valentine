@@ -53,20 +53,20 @@ body {
   height: -webkit-fill-available;
 }
 
-/* Floating hearts animation */
+/* Floating hearts animation - starts from bottom, moves up */
 @keyframes float {
   0% {
-    transform: translateY(100vh) translateY(0) rotate(0deg);
+    transform: translateY(0) rotate(0deg);
     opacity: 0;
   }
-  10% {
+  5% {
     opacity: 1;
   }
-  90% {
+  95% {
     opacity: 1;
   }
   100% {
-    transform: translateY(-100vh) translateY(0) rotate(360deg);
+    transform: translateY(-100vh) rotate(360deg);
     opacity: 0;
   }
 }
@@ -75,13 +75,13 @@ body {
 @supports (-webkit-touch-callout: none) {
   @keyframes float {
     0% {
-      transform: translateY(100%) rotate(0deg);
+      transform: translateY(0) rotate(0deg);
       opacity: 0;
     }
-    10% {
+    5% {
       opacity: 1;
     }
-    90% {
+    95% {
       opacity: 1;
     }
     100% {
@@ -92,20 +92,26 @@ body {
 }
 
 .heart {
-  position: absolute;
+  position: fixed;
   font-size: 20px;
   animation: float 8s linear infinite;
   pointer-events: none;
   z-index: 1;
+  /* Start from bottom to prevent stacking bug */
+  bottom: 0;
+  transform: translateY(0);
 }
 
 .bow {
-  position: absolute;
+  position: fixed;
   font-size: 24px;
   animation: float 10s linear infinite;
   pointer-events: none;
   z-index: 1;
   filter: drop-shadow(0 2px 4px rgba(255, 182, 193, 0.4));
+  /* Start from bottom to prevent stacking bug */
+  bottom: 0;
+  transform: translateY(0);
 }
 
 /* Sparkle animation */
