@@ -19,7 +19,7 @@ export const translations = {
 
   // Success message
   success: {
-    mainMessage: 'Kocham Cię 💖',
+    mainMessage: 'Kocham Cię Julcia 💖',
     subtitle: '',
   },
 

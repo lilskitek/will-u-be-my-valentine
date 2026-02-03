@@ -7,10 +7,8 @@ import './page.css'
 
 export default function Home() {
   const [yesClicked, setYesClicked] = useState(false)
-  const [hearts, setHearts] = useState<Array<{ id: number; left: number; delay: number }>>([])
   const [sparkles, setSparkles] = useState<Array<{ id: number; left: number; top: number }>>([])
   const [confetti, setConfetti] = useState<Array<{ id: number; left: number; delay: number; color: string }>>([])
-  const [bows, setBows] = useState<Array<{ id: number; left: number; delay: number }>>([])
   const [noButtonMoved, setNoButtonMoved] = useState(false)
   const noButtonRef = useRef<HTMLButtonElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -130,14 +128,6 @@ export default function Home() {
   const handleYesClick = () => {
     setYesClicked(true)
 
-    // Create floating hearts - start from bottom (100vh)
-    const newHearts = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 2,
-    }))
-    setHearts(newHearts)
-
     // Create sparkles - positioned randomly but visible
     const newSparkles = Array.from({ length: 30 }, (_, i) => ({
       id: i,
@@ -155,24 +145,14 @@ export default function Home() {
       color: colors[Math.floor(Math.random() * colors.length)],
     }))
     setConfetti(newConfetti)
-
-    // Create floating bows - start from bottom (100vh)
-    const newBows = Array.from({ length: 15 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 2,
-    }))
-    setBows(newBows)
   }
 
   useEffect(() => {
     if (yesClicked) {
-      // Remove hearts after animation
+      // Remove animations after they complete
       const timer = setTimeout(() => {
-        setHearts([])
         setSparkles([])
         setConfetti([])
-        setBows([])
       }, 10000)
       return () => clearTimeout(timer)
     }
@@ -180,21 +160,6 @@ export default function Home() {
 
   return (
     <div ref={containerRef} className="container">
-      {/* Floating hearts */}
-      {hearts.map((heart) => (
-        <div
-          key={heart.id}
-          className="heart"
-          style={{
-            left: `${heart.left}%`,
-            bottom: '0',
-            animationDelay: `${heart.delay}s`,
-          }}
-        >
-          💖
-        </div>
-      ))}
-
       {/* Sparkles */}
       {sparkles.map((sparkle) => (
         <div
@@ -222,21 +187,6 @@ export default function Home() {
             borderRadius: Math.random() > 0.5 ? '50%' : '0',
           }}
         />
-      ))}
-
-      {/* Floating Bows */}
-      {bows.map((bow) => (
-        <div
-          key={bow.id}
-          className="bow"
-          style={{
-            left: `${bow.left}%`,
-            bottom: '0',
-            animationDelay: `${bow.delay}s`,
-          }}
-        >
-          🎀
-        </div>
       ))}
 
       <AnimatePresence mode="wait">
