@@ -4,8 +4,8 @@
 export const translations = {
   // Page metadata
   metadata: {
-    title: 'Will you be my Valentine? 💖',
-    description: 'A cute Valentine\'s Day proposal',
+    title: 'BARDZO WAŻNY LINK',
+    description: '',
   },
 
   // Main question
